@@ -3,8 +3,9 @@
 </script>
 
 <template>
-  <router-view></router-view>
+<div>HomeView</div>
 </template>
 
 <style scoped>
+
 </style>
