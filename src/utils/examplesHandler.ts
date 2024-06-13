@@ -1,4 +1,5 @@
 import {RouteRecordRaw} from "vue-router";
+import {generateUUID} from "@/utils/common.ts";
 
 /**
  * 构建样例树结构
@@ -6,6 +7,7 @@ import {RouteRecordRaw} from "vue-router";
  */
 const examplesHandler = (routes: RouteRecordRaw[]): Route => {
     const examplesTree: Route = {
+        id:"",
         name: '',
         path:'',
         children: []
@@ -32,6 +34,7 @@ const examplesHandler = (routes: RouteRecordRaw[]): Route => {
             // 如果当前层级节点尚未在 map 中，则添加到树中
             if (!nodesMap.has(nodeName)) {
                 const newNode: Route = {
+                    id:generateUUID(),
                     name: nodeName,
                     path:'',
                     children: []
@@ -47,6 +50,7 @@ const examplesHandler = (routes: RouteRecordRaw[]): Route => {
         // 最后一个部分是叶子节点，添加其路径和名称（不添加其他属性）
         const leafName = parts[parts.length - 1]
         currentNode.children?.push({
+            id:generateUUID(),
             path: route.path,
             name: leafName
         });
