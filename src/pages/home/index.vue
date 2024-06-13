@@ -1,5 +1,13 @@
+<script lang="ts" setup>
+import AsideMenu from "@/components/layout/aside/AsideMenu.vue";
+import {useMenuStore} from "@/store/menu";
+
+const menuStore = useMenuStore();
+menuStore.buildMenuTree();
+</script>
+
 <template>
-  <el-container style="height: 500px">
+  <el-container style="height: 100%">
     <el-header style="text-align: right; font-size: 12px">
     </el-header>
     <el-container>
@@ -24,14 +32,5 @@
     </el-container>
   </el-container>
 </template>
-
-<script lang="ts" setup>
-import AsideMenu from "@/components/layout/aside/AsideMenu.vue";
-import {useMenuStore} from "@/store/menu";
-const menuStore = useMenuStore();
-menuStore.buildMenuTree();
-
-</script>
-
 <style scoped>
 </style>
