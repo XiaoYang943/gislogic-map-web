@@ -2,6 +2,25 @@ import {RouteRecordRaw} from "vue-router";
 import {generateUUID} from "@/utils/common.ts";
 
 /**
+ * 根据name属性排序：01... 02...
+ * @param children
+ */
+const sortChildrenByName = (children: Route[]): Route[] => {
+    return children.sort((a, b) => {
+        // 使用正则表达式从 name 中提取数字前缀
+        const prefixA = parseInt(a.name.match(/^\d+/)?.[0] ?? '0', 10);
+        const prefixB = parseInt(b.name.match(/^\d+/)?.[0] ?? '0', 10);
+
+        // 如果前缀相同，则按字母顺序排序
+        if (prefixA === prefixB) {
+            return a.name.localeCompare(b.name);
+        }
+
+        // 按数字前缀排序
+        return prefixA - prefixB;
+    });
+}
+/**
  * 构建样例树结构
  * @param routes
  */
@@ -49,12 +68,28 @@ const examplesHandler = (routes: RouteRecordRaw[]): Route => {
 
         // 最后一个部分是叶子节点，添加其路径和名称（不添加其他属性）
         const leafName = parts[parts.length - 1]
+
+        // 在添加到 children 之前，检查当前节点的 children 是否已经排序
+        if (currentNode.children) {
+            currentNode.children = sortChildrenByName(currentNode.children);
+        }
+
         currentNode.children?.push({
             id:generateUUID(),
             path: route.path,
             name: leafName
         });
     });
+
+    // 对整个树进行递归排序
+    function sortTree(node: Route) {
+        if (node.children) {
+            node.children = sortChildrenByName(node.children);
+            node.children.forEach(child => sortTree(child));
+        }
+    }
+    sortTree(examplesTree);
+
     return examplesTree;
 }
 
