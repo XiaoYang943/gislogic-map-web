@@ -4,3 +4,8 @@ body,
     height: 100%;
     margin: 0;
 }
+#ol-map {
+    position: absolute;
+    width: 86%;
+    height: 90%;
+}

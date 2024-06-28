@@ -11,14 +11,8 @@ onMounted(() => {
 </script>
 
 <template>
-  <div id="map" ref="mapRef"></div>
+  <div id="ol-map" ref="mapRef"></div>
 </template>
 
 <style scoped>
-
-#map {
-  position: absolute;
-  width: 86%;
-  height: 90%;
-}
 </style>
