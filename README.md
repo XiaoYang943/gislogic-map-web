@@ -11,4 +11,5 @@
 - revert:回退
 - chore:构建/工程依赖/工具
 - ci:CI related changes
+- style:样式
 
