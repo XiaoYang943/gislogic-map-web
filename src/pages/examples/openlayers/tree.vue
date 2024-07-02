@@ -22,8 +22,22 @@
         <span class="custom-tree-node">
           <span>{{ node.label }}</span>
           <span>
-            <a @click="append(data)"> Append </a>
-            <a style="margin-left: 8px" @click="remove(node, data)"> Delete </a>
+            <el-icon @click="append(data)"><CirclePlus/></el-icon>
+            <el-icon style="margin-left: 8px" @click="remove(node, data)"><Delete/></el-icon>
+
+              <el-popover
+                  placement="right"
+                  :width="200"
+                  trigger="click"
+              >
+              <template #reference>
+               <el-icon style="margin-left: 8px" @click="moreHandler(node, data)"><MoreFilled/></el-icon>
+              </template>
+               <el-icon style="margin-left: 8px" @click="zoomTo(node, data)"><FullScreen/></el-icon>
+                <span>Zoom to layer</span>
+                <el-icon style="margin-left: 8px" @click="download(node, data)"><Download/></el-icon>
+                <span>download</span>
+            </el-popover>
           </span>
         </span>
       </template>
@@ -45,7 +59,8 @@
 import type Node from 'element-plus/es/components/tree/src/model/node'
 import type {DragEvents} from 'element-plus/es/components/tree/src/model/useDragNode'
 import type {AllowDropType, NodeDropType,} from 'element-plus/es/components/tree/src/tree.type'
-import {computed, reactive} from "vue";
+import {computed, reactive,} from "vue";
+import {Download, FullScreen, MoreFilled} from "@element-plus/icons-vue";
 
 interface Tree {
   id: number
@@ -70,6 +85,15 @@ const remove = (node: Node, data: Tree) => {
   const index = children.findIndex((d) => d.id === data.id)
   children.splice(index, 1)
   dataSource.value = [...dataSource.value]
+}
+const zoomTo = (node: Node, data: Tree) => {
+
+}
+const moreHandler = (node: Node, data: Tree) => {
+
+}
+const download = (node: Node, data: Tree) => {
+
 }
 const handleCheckChange = (
     data: Tree,
