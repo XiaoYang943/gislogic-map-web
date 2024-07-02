@@ -1,13 +1,13 @@
 <script setup lang="ts">
 import {onMounted, ref} from "vue";
 import VectorSource from "ol/source/Vector";
-import {geojson} from "flatgeobuf";
 import VectorLayer from "ol/layer/Vector";
 import Map from "ol/Map";
 import TileLayer from "ol/layer/Tile";
 import {XYZ} from "ol/source";
 import View from "ol/View";
 import {GeoJSON} from "ol/format";
+import {geojson} from "flatgeobuf";
 
 const mapRef = ref<HTMLElement>();
 onMounted(async () => {
@@ -15,13 +15,25 @@ onMounted(async () => {
     const source = new VectorSource({
       format: new GeoJSON(),
       loader: async function () {
-        // const response = await fetch('https://flatgeobuf.org/test/data/UScounties.fgb')
-        const response = await fetch('/public/test/data/UScounties.fgb')
-        for await (let json of geojson.deserialize(response.body)) {
-          console.log("json", json)
-          const feature = new GeoJSON().readFeatures(json);
-          console.log("feature", feature)
-          source.addFeatures(feature)
+        const response = await fetch('https://flatgeobuf.org/test/data/UScounties.fgb')
+        // const response = await fetch('/public/test/data/UScounties.fgb')
+        if (response.body) {
+          for await (let json of geojson.deserialize(response.body)) {
+            const feature = new GeoJSON().readFeature(json);
+            if (feature) {
+              const geometry = feature.getGeometry();
+              if (geometry) {
+                geometry.transform('EPSG:4326', 'EPSG:3857');
+                source.addFeature(feature);
+              } else {
+                console.error('Feature has no geometry:', feature);
+              }
+            } else {
+              console.error('Failed to create feature from GeoJSON:', json);
+            }
+          }
+        } else {
+          console.error('No response body received');
         }
       }
     })
@@ -43,7 +55,6 @@ onMounted(async () => {
         }),
         new VectorLayer({
           source: source,
-          zIndex: 999
         })
       ],
       view: new View({
