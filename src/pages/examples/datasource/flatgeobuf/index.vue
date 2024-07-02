@@ -1,13 +1,13 @@
 <script setup lang="ts">
 import {onMounted, ref} from "vue";
 import VectorSource from "ol/source/Vector";
-import VectorLayer from "ol/layer/Vector";
 import Map from "ol/Map";
-import TileLayer from "ol/layer/Tile";
-import {XYZ} from "ol/source";
 import View from "ol/View";
 import {GeoJSON} from "ol/format";
 import {geojson} from "flatgeobuf";
+import {VectorImage} from "ol/layer";
+import TileLayer from "ol/layer/Tile.js";
+import {XYZ} from "ol/source";
 
 const mapRef = ref<HTMLElement>();
 onMounted(async () => {
@@ -53,7 +53,7 @@ onMounted(async () => {
           }),
           zIndex: 1,
         }),
-        new VectorLayer({
+        new VectorImage({
           source: source,
         })
       ],
@@ -62,8 +62,6 @@ onMounted(async () => {
         zoom: 0,
       }),
     });
-
-
   }
 })
 
