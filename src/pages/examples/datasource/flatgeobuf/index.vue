@@ -1,0 +1,76 @@
+<script setup lang="ts">
+import {onMounted, ref} from "vue";
+import VectorSource from "ol/source/Vector";
+import Map from "ol/Map";
+import View from "ol/View";
+import {GeoJSON} from "ol/format";
+import {geojson} from "flatgeobuf";
+import {VectorImage} from "ol/layer";
+import TileLayer from "ol/layer/Tile.js";
+import {XYZ} from "ol/source";
+
+const mapRef = ref<HTMLElement>();
+onMounted(async () => {
+  if (mapRef.value) {
+    const source = new VectorSource({
+      format: new GeoJSON(),
+      loader: async function () {
+        const response = await fetch('https://flatgeobuf.org/test/data/UScounties.fgb')
+        // const response = await fetch('/public/test/data/UScounties.fgb')
+        if (response.body) {
+          for await (let json of geojson.deserialize(response.body)) {
+            const feature = new GeoJSON().readFeature(json);
+            if (feature) {
+              const geometry = feature.getGeometry();
+              if (geometry) {
+                geometry.transform('EPSG:4326', 'EPSG:3857');
+                source.addFeature(feature);
+              } else {
+                console.error('Feature has no geometry:', feature);
+              }
+            } else {
+              console.error('Failed to create feature from GeoJSON:', json);
+            }
+          }
+        } else {
+          console.error('No response body received');
+        }
+      }
+    })
+    new Map({
+      target: mapRef.value,
+      layers: [
+        new TileLayer({
+          source: new XYZ({
+            url: 'http://t4.tianditu.com/DataServer?T=vec_w&tk=a9bbec302f2213e1fe33e9775187d021&x={x}&y={y}&l={z}',
+          }),
+          zIndex: 0,
+        }),
+
+        new TileLayer({
+          source: new XYZ({
+            url: 'http://t4.tianditu.com/DataServer?T=cva_w&tk=81b9a9cf3e4be1df181e7bf54c5949fc&x={x}&y={y}&l={z}',
+          }),
+          zIndex: 1,
+        }),
+        new VectorImage({
+          source: source,
+        })
+      ],
+      view: new View({
+        center: [0, 0],
+        zoom: 0,
+      }),
+    });
+  }
+})
+
+
+</script>
+
+<template>
+  <div id="ol-map" ref="mapRef"></div>
+</template>
+
+<style scoped>
+</style>
