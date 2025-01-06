@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import DrawImageOnCanvas from "./01-draw-image-on-canvas.vue"
-import {getTileRowAndCol} from "@/utils/coords";
+import {getTileRowAndCol} from "src/utils/tiles";
 import {onMounted, ref, watch,} from "vue";
 
 const mapCenterLon = ref(111) // 地图中心点经度

@@ -1,10 +1,14 @@
 import {EARTH_PERIMETER, EARTH_RADIUS, TILE_SIZE} from "@/constant";
-// 获取某一层级下的分辨率，单位：米/像素
-// 一像素代表实地距离多少米
-export const getResolution = (zoom: number) => {
-    const tileNumsX = Math.pow(2, zoom) // X或Y方向上的瓦片数量
-    const tileTotalPx = tileNumsX * TILE_SIZE // X或Y方向上的像素数
-    return EARTH_PERIMETER / tileTotalPx
+
+/**
+ * 计算某一层级下的分辨率(单位：米/像素)
+ * 一像素代表实地距离多少米
+ * @param zoom 缩放层级
+ */
+export const getResolution = (zoom: number) :number => {
+    const tilesNumRow = Math.pow(2, zoom) // X或Y方向上的瓦片数量 1 2 4 8 ...
+    const pixelsRow = tilesNumRow * TILE_SIZE // X或Y方向上的像素数
+    return EARTH_PERIMETER / pixelsRow
 }
 
 // 角度转弧度
