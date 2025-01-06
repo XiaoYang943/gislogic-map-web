@@ -24,20 +24,6 @@
           <span>
             <el-icon @click="append(data)"><CirclePlus/></el-icon>
             <el-icon style="margin-left: 8px" @click="remove(node, data)"><Delete/></el-icon>
-
-              <el-popover
-                  placement="right"
-                  :width="200"
-                  trigger="click"
-              >
-              <template #reference>
-               <el-icon style="margin-left: 8px" @click="moreHandler(node, data)"><MoreFilled/></el-icon>
-              </template>
-               <el-icon style="margin-left: 8px" @click="zoomTo(node, data)"><FullScreen/></el-icon>
-                <span>Zoom to layer</span>
-                <el-icon style="margin-left: 8px" @click="download(node, data)"><Download/></el-icon>
-                <span>download</span>
-            </el-popover>
           </span>
         </span>
       </template>
@@ -85,15 +71,6 @@ const remove = (node: Node, data: Tree) => {
   const index = children.findIndex((d) => d.id === data.id)
   children.splice(index, 1)
   dataSource.value = [...dataSource.value]
-}
-const zoomTo = (node: Node, data: Tree) => {
-
-}
-const moreHandler = (node: Node, data: Tree) => {
-
-}
-const download = (node: Node, data: Tree) => {
-
 }
 const handleCheckChange = (
     data: Tree,
