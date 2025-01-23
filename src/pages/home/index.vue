@@ -8,8 +8,6 @@ menuStore.buildMenuTree();
 
 <template>
   <el-container style="height: 100%">
-    <el-header style="text-align: right; font-size: 12px">
-    </el-header>
     <el-container>
       <el-aside width="200px" style="background-color: transparent">
         <el-scrollbar>
