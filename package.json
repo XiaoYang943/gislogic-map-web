@@ -15,6 +15,7 @@
     "axios": "^1.7.2",
     "element-plus": "^2.7.5",
     "flatgeobuf": "^3.32.4",
+    "maplibre-gl": "^5.0.1",
     "node-fetch": "^3.3.2",
     "ol": "^9.2.4",
     "pinia": "^2.1.7",
